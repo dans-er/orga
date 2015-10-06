@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+<!-- java -Dlogback.configurationFile=./logback.xml -jar diffkit-app.jar -->
+
+
+<!-- 
+I know this post is a bit old but adding the following to application.properties is a good workaround:
+
+logging.config=${logback.configurationFile}
+-->
+
+
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+			by default -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ROLLINGFILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/app.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>logs/app.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+			<!-- keep 30 days' worth of history -->
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<root level="info">
+		<!-- appender-ref ref="STDOUT" /-->
+		<appender-ref ref="ROLLINGFILE" />
+	</root>
+</configuration>
